@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./src",
+		"checkJs": false,
+		"jsx": "react",
+		"lib": [
+			"es2015",
+			"es2016",
+			"dom"
+		],
+		"paths": {
+			"@features/*": [
+				"./features/*"
+			],
+			"@shared/*": [
+				"./shared/*"
+			],
+			"@store": [
+				"./store.js"
+			]
+		}
+	},
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
+}

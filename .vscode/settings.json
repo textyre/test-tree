@@ -1,0 +1,17 @@
+{
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "editor.renderWhitespace": "all",
+    "[javascript]": {
+        "editor.formatOnSave": true,
+    },
+    "[html]": {
+        "editor.formatOnSave": false,
+    },
+    "[json]": {
+        "editor.formatOnSave": false,
+    },
+    "eslint.autoFixOnSave": true,
+    "eslint.alwaysShowStatus": true,
+    "typescript.surveys.enabled": false
+}

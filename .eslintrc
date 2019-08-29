@@ -1,0 +1,68 @@
+{
+    "extends": [
+        "react-app",
+        "prettier",
+        "airbnb",
+        "plugin:react-perf/all"
+    ],
+    "rules": {
+        "jsx-quotes": [
+            1,
+            "prefer-double"
+        ],
+        "semi": 0,
+        "linebreak-style": 0,
+        "indent": [
+            "error",
+            "tab"
+        ],
+        "no-tabs": 0,
+        "no-mixed-spaces-and-tabs": [
+            0,
+            "smart-tabs"
+        ],
+        "max-len": [
+            "error",
+            {
+                "code": 120
+            }
+        ],
+        "import/no-unresolved": 0,
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": true
+            }
+        ],
+        "react/jsx-filename-extension": 0,
+        "react/prop-types": 0,
+        "react/jsx-indent": "tab",
+        "react/jsx-one-expression-per-line": 0,
+        "react/jsx-indent-props": "tab",
+        "jsx-a11y/click-events-have-key-events": 0,
+        "jsx-a11y/no-autofocus": 0,
+        "object-curly-newline": 0,
+        "dot-notation": 0,
+        "no-extra-boolean-cast": 0,
+        "implicit-arrow-linebreak": [
+            "error",
+            "beside"
+        ],
+        "import/prefer-default-export": 0,
+        "comma-dangle": [
+            "error",
+            "only-multiline"
+        ],
+        "arrow-body-style": [
+            "error",
+            "as-needed"
+        ],
+        "fda/no-direct-use-rematch-state": 2
+    },
+    "plugins": [
+        "prettier",
+        "react-hooks",
+        "fda",
+        "react-perf"
+    ]
+}
