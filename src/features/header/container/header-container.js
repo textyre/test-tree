@@ -4,21 +4,19 @@
 import React, { useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import { setLoadedFileAction, resetLoadedFileAction } from '@features/body/store/actions'
-import { rootIndexSelector } from '@features/body/store/selectors'
+// import { rootIndexSelector } from '@features/body/store/selectors'
 import PapaParse from 'papaparse'
 import { HeaderView } from '../views/header-view'
 
 const enhance = connect(
-	state => ({
-		rootIndex: rootIndexSelector(state)
-	}),
+	null,
 	state => ({
 		setLoadedFile: file => setLoadedFileAction(state, file),
 		resetLoadedFile: file => resetLoadedFileAction(state, file)
 	})
 )
 
-export const HeaderContainer = enhance(({ rootIndex, setLoadedFile, resetLoadedFile }) => {
+export const HeaderContainer = enhance(({ setLoadedFile }) => {
 	const [progress, setProgress] = useState(0);
 
 	const updateProgress = useCallback((event) => {
@@ -42,16 +40,16 @@ export const HeaderContainer = enhance(({ rootIndex, setLoadedFile, resetLoadedF
 			const result = PapaParse.parse(
 				event.target.result, {}
 			);
+			setLoadedFile(result.data)
+			// if (Number(rootIndex) === Number(result.data[0][0])) {
 
-			if (Number(rootIndex) === Number(result.data[0][0])) {
-				setLoadedFile(result.data)
-			} else {
-				resetLoadedFile(result.data)
-			}
+			// } else {
+			// 	resetLoadedFile(result.data)
+			// }
 		}
 
 		reader.readAsText(event.target.files[0]);
-	}, [resetLoadedFile, rootIndex, setLoadedFile, updateProgress]);
+	}, [setLoadedFile, updateProgress]);
 
 	return (
 		<HeaderView

@@ -6,12 +6,12 @@ const KEY_NODE = 0;
 const NAME_NODE = 1;
 const ROOT_NODE = 2;
 const COMMENT_NODE = 3;
-const STATUS = 4;
+// const STATUS = 4;
 
-const EDITABLE = 'EDITABLE';
-const NOT_EDITABLE = 'NOT_EDITABLE';
-const NEW = 'NEW';
-const OLD = 'OLD';
+// const EDITABLE = 'EDITABLE';
+// const NOT_EDITABLE = 'NOT_EDITABLE';
+// const NEW = 'NEW';
+// const OLD = 'OLD';
 
 const rootSelector = createSelector(
 	root => root.fileSystems,
@@ -20,48 +20,33 @@ const rootSelector = createSelector(
 
 export const unpreparedFilesSystemSelector = createSelector(
 	rootSelector,
-	({ unpreparedFiles }) => unpreparedFiles
+	({ unpreparedFile }) => unpreparedFile
 )
 
-export const rootIndexSelector = createSelector(
-	rootSelector,
-	({ unpreparedFiles }) => {
-		if (unpreparedFiles.length) {
-			return unpreparedFiles[unpreparedFiles.length - 1][KEY_NODE][KEY_NODE];
-		} return 0;
-	}
-)
+// export const rootIndexSelector = createSelector(
+// 	rootSelector,
+// 	({ unpreparedFiles }) => {
+// 		if (unpreparedFiles.length) {
+// 			return unpreparedFiles[unpreparedFiles.length - 1][KEY_NODE][KEY_NODE];
+// 		} return 0;
+// 	}
+// )
 
 export const nodesTreeSelector = createSelector(
 	unpreparedFilesSystemSelector,
-	(files) => {
+	(data) => {
 		const tree = {}
-		if (files.length) {
-			const freshVersion = files.length - 1;
-			const fewFersion = files.length > 1;
+		if (data) {
+			data.forEach((node) => {
+				const id = node[KEY_NODE];
+				const name = node[NAME_NODE];
+				const rootID = node[ROOT_NODE];
+				const comment = node[COMMENT_NODE];
 
-			files.forEach((data, index) => {
-				data.forEach((node) => {
-					const id = node[KEY_NODE];
-					const name = node[NAME_NODE];
-					const rootID = node[ROOT_NODE];
-					const comment = node[COMMENT_NODE];
-					let status = node[STATUS];
-
-					if (fewFersion) {
-						if (index === freshVersion) status = NEW;
-						if (fewFersion && index < freshVersion) status = OLD;
-					} else {
-						status = NOT_EDITABLE;
-					}
-
-					if (!tree[rootID]) tree[rootID] = []
-					tree[rootID] = [...tree[rootID], { id, name, comment, status }]
-				});
+				if (!tree[rootID]) tree[rootID] = []
+				tree[rootID] = [...tree[rootID], { id, name, comment }]
 			});
 		} else return null;
-		console.log(tree);
-
 		return tree;
 	}
 )
@@ -71,25 +56,18 @@ export const preparedFilesSystemSelector = createSelector(
 	(nodesTree) => {
 		let buildedTree = {}
 		const build = (root, tree, buildingTree) => {
-			tree.forEach(({ id, name, comment, status }) => {
+			tree.forEach(({ id, name, comment }) => {
 				if (root[id]) {
-					if (buildingTree[id]) {
-						buildingTree[id].name = name;
-						buildingTree[id].status = EDITABLE;
-					} else {
-						buildingTree[id] = {
-							name,
-							children: build(root, root[id], {}),
-							comment,
-							status
-						}
+					buildingTree[id] = {
+						name,
+						children: build(root, root[id], {}),
+						comment,
 					}
 				} else {
 					buildingTree[id] = {
 						name,
 						children: null,
-						comment,
-						status
+						comment
 					}
 				}
 			})
