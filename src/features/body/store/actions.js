@@ -4,6 +4,14 @@ export const setLoadedFileAction = (state, file) => {
 	selectFeature(state).setLoadedFile(file)
 }
 
-export const setPreparedFileSystemsAction = (state, fileSystems) => {
-	selectFeature(state).setPreparedFileSystems(fileSystems)
+export const setActiveForCommentByKeyAction = (state, key) => {
+	selectFeature(state).setActiveForCommentByKey(key)
+}
+
+export const setCommentAction = (state, comment, id) => {
+	selectFeature(state).setComment({ comment, id })
+}
+
+export const resetLoadedFileAction = (state, file) => {
+	selectFeature(state).resetLoadedFile(file)
 }

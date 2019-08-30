@@ -1,17 +1,33 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
 export default {
 	name: 'fileSystems',
 	state: {
-		unpreparedFile: null,
-		preparedFilesSystem: {}
+		unpreparedFiles: [],
+		activeNodeForComment: null
 	},
 	reducers: {
 		setLoadedFile(state, file) {
-			state.unpreparedFile = file;
+			state.unpreparedFiles.push(file);
 			return state;
 		},
-		setPreparedFileSystems(state, preparedFilesSystem) {
-			state.preparedFilesSystem = { ...state.preparedFilesSystem, ...preparedFilesSystem };
+		resetLoadedFile(state, file) {
+			state.unpreparedFiles = []
+			state.unpreparedFiles.push(file);
+			return state;
+		},
+		setActiveForCommentByKey(state, key) {
+			state.activeNodeForComment = key;
+			return state;
+		},
+		setComment(state, { comment, id }) {
+			const { unpreparedFiles } = state
+			const lastFile = unpreparedFiles[unpreparedFiles.length - 1]
+
+			for (let i = 0; i < lastFile.length; i++) {
+				if (Number(lastFile[i][0]) === Number(id)) lastFile[i][3] = comment;
+			}
+
 			return state;
 		}
 	}

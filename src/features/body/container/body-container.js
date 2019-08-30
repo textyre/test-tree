@@ -1,8 +1,8 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
-import React from 'react'
+import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
-import { setPreparedFileSystemsAction } from '@features/body/store/actions'
+import { setActiveForCommentByKeyAction } from '@features/body/store/actions'
 import {
 	preparedFilesSystemSelector,
 	unpreparedFilesSystemSelector
@@ -16,12 +16,19 @@ const enhance = connect(
 		preparedFilesSystem: preparedFilesSystemSelector(state),
 	}),
 	state => ({
-		setPreparedFilesSystems: fileSystems => setPreparedFileSystemsAction(state, fileSystems),
+		setActiveForCommentByKey: key => setActiveForCommentByKeyAction(state, key),
 	})
 )
 
 export const BodyContainer = enhance(({
-	preparedFilesSystem
-}) => (
-	<BodyView fileSystems={preparedFilesSystem} />
-))
+	preparedFilesSystem,
+	setActiveForCommentByKey
+}) => {
+	const onClickNode = useCallback((key) => {
+		setActiveForCommentByKey(key);
+	}, [setActiveForCommentByKey])
+
+	return (
+		<BodyView fileSystems={preparedFilesSystem} onClickNode={onClickNode} />
+	)
+})

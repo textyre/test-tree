@@ -4,13 +4,11 @@ export const styles = css`
     .header {
         position: fixed;
         padding: 20px;
-        box-shadow: 0px 5px 10px #0000002b;
         width: 100%;
         display: inline-flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
-        z-index: 9999;
-        background-color: inherit;
+        box-sizing: border-box;
         .process_line {
             background-color: #494eec;
             width: 0;
@@ -30,7 +28,7 @@ export const styles = css`
         }
 
         .custon_input {
-            border-radius: 8px;
+            border-radius: 5px;
             background-color: #5358ed;
             display: inline-flex;
             color: white;
