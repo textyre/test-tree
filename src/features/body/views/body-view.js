@@ -4,10 +4,14 @@ import React, { useCallback } from 'react'
 import { AbstractNode } from './abstract-node'
 import { styles } from './styles'
 
-const GroupAbstractNode = ({ keyNode, node, marginLeft, onClickNode }) => {
+const GroupAbstractNode = ({ keyNode, node, marginLeft, onClickNode, onDeleteComment }) => {
 	const handlerClick = useCallback(id => () => {
 		onClickNode(id)
 	}, [onClickNode])
+
+	const handlerDeleteComment = useCallback(id => () => {
+		onDeleteComment(id)
+	}, [onDeleteComment])
 
 	return (
 		<React.Fragment>
@@ -16,6 +20,7 @@ const GroupAbstractNode = ({ keyNode, node, marginLeft, onClickNode }) => {
 				comment={node.comment}
 				key={node.name + keyNode}
 				onClickNode={handlerClick(keyNode)}
+				onDeleteComment={handlerDeleteComment(keyNode)}
 				status={node.status}
 			/>
 			{
@@ -30,6 +35,7 @@ const GroupAbstractNode = ({ keyNode, node, marginLeft, onClickNode }) => {
 										node={nextNode}
 										marginLeft={marginLeft}
 										onClickNode={onClickNode}
+										onDeleteComment={onDeleteComment}
 									/>
 								</div>
 							</React.Fragment>
@@ -41,6 +47,7 @@ const GroupAbstractNode = ({ keyNode, node, marginLeft, onClickNode }) => {
 							comment={nextNode.comment}
 							marginLeft={marginLeft + 10}
 							onClickNode={handlerClick(key)}
+							onDeleteComment={handlerDeleteComment(key)}
 							key={nextNode.name + key}
 							status={nextNode.status}
 						/>
@@ -51,7 +58,7 @@ const GroupAbstractNode = ({ keyNode, node, marginLeft, onClickNode }) => {
 	)
 }
 
-export const BodyView = ({ fileSystems, onClickNode }) => {
+export const BodyView = ({ fileSystems, onClickNode, onDeleteComment }) => {
 	const rootKey = Object.keys(fileSystems)[0]
 
 	return (
@@ -62,6 +69,7 @@ export const BodyView = ({ fileSystems, onClickNode }) => {
 					node={fileSystems[rootKey]}
 					marginLeft={10}
 					onClickNode={onClickNode}
+					onDeleteComment={onDeleteComment}
 				/>
 			)}
 		</div>

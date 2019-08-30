@@ -28,6 +28,15 @@ export default {
 			}
 
 			return state;
+		},
+		deleteComment(state, id) {
+			const { unpreparedFile } = state
+
+			for (let i = 0; i < unpreparedFile.length; i++) {
+				if (Number(unpreparedFile[i][0]) === Number(id)) unpreparedFile[i][3] = null;
+			}
+
+			return state;
 		}
 	}
 }

@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
-import { setActiveForCommentByKeyAction } from '@features/body/store/actions'
+import { setActiveForCommentByKeyAction, deleteCommentAction } from '@features/body/store/actions'
 import {
 	preparedFilesSystemSelector,
 	unpreparedFilesSystemSelector
@@ -17,18 +17,24 @@ const enhance = connect(
 	}),
 	state => ({
 		setActiveForCommentByKey: key => setActiveForCommentByKeyAction(state, key),
+		deleteComment: id => deleteCommentAction(state, id),
 	})
 )
 
 export const BodyContainer = enhance(({
 	preparedFilesSystem,
-	setActiveForCommentByKey
+	setActiveForCommentByKey,
+	deleteComment
 }) => {
 	const onClickNode = useCallback((key) => {
 		setActiveForCommentByKey(key);
 	}, [setActiveForCommentByKey])
 
+	const onDeleteComment = useCallback((id) => {
+		deleteComment(id);
+	}, [deleteComment])
+
 	return (
-		<BodyView fileSystems={preparedFilesSystem} onClickNode={onClickNode} />
+		<BodyView fileSystems={preparedFilesSystem} onDeleteComment={onDeleteComment} onClickNode={onClickNode} />
 	)
 })

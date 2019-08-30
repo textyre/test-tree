@@ -9,13 +9,14 @@ export const styles = css`
         display: inline-flex;
         align-items: center;
         width: 100%;
+        padding: 5px;
         .node {
             position: relative;
             margin-bottom: 5px;
             cursor: pointer;
             &:hover {
                 color:  #8285e8;
-            }
+            }            
         }
         .new {
             animation: new_node 5s ease-in-out 0s 10 alternate;
@@ -26,12 +27,35 @@ export const styles = css`
         .for_deleted {
             animation: for_delete 5s ease-in-out 0s 10 alternate;
         }
+        &:hover > .wrapper_comment {
+            opacity: 1;
+        }
+        .wrapper_comment_delete {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wrapper_comment {
+            display: inline-flex;
+            align-items: center;
+            opacity: 0;
+        }
         .comment {
             font-size: 12px;
             font-weight: 600;
             font-style: italic;
             opacity: 0.5;
             margin-left: 10px;
+            cursor: pointer;
+        }
+        .comment_delete {
+            height: 10px;
+            width: 10px;
+            fill: white;
+            margin-left: 10px;
+            &:hover {
+                fill: #8285e8;
+            }
         }
     }
 

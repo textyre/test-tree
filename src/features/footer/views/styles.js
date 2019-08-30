@@ -22,13 +22,24 @@ export const styles = css`
             justify-content: space-between;
             align-items: flex-start;
             .who {
+                display: inline-flex;
+                justify-content: space-between;
+                align-items: center;
                 padding: 10px;
                 background-color: #8285e8;
                 color: white;
                 border-radius: 5px;
                 margin-right: 10px;
-                display: inline-flex;
                 white-space: nowrap;
+            }
+            .delete_reciever {
+                height: 13px;
+                width: 13px;
+                fill: white;
+                margin-left: 10px;
+                &:hover {
+                    fill: #2b2c54;
+                }
             }
             .comment {
                 border-style: solid;

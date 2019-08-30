@@ -3,8 +3,8 @@ import React from 'react'
 import { styles } from './styles'
 import { Comment } from './comment'
 
-export const FooterView = ({ setComment, node }) => (
+export const FooterView = props => (
 	<div className={styles.footer}>
-		<Comment setComment={setComment} node={node} />
+		<Comment {...props} />
 	</div>
 )
