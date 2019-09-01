@@ -13,5 +13,8 @@
     },
     "eslint.autoFixOnSave": true,
     "eslint.alwaysShowStatus": true,
-    "typescript.surveys.enabled": false
+    "typescript.surveys.enabled": false,
+    "search.exclude": {
+        "**/.history": true
+    },
 }

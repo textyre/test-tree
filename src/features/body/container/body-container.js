@@ -2,39 +2,47 @@
 /* eslint-disable no-param-reassign */
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
-import { setActiveForCommentByKeyAction, deleteCommentAction } from '@features/body/store/actions'
+import { setActiveForCommentByKeyAction, deleteCommentAction, updateTreeAction } from '@features/body/store/actions'
 import {
-	preparedFilesSystemSelector,
-	unpreparedFilesSystemSelector
+	fileSystemSelector,
+	versionSelector,
+	treeLinksSelector
 } from '@features/body/store/selectors'
 
 import { BodyView } from '../views/body-view'
 
 const enhance = connect(
 	state => ({
-		unpreparedFilesSystem: unpreparedFilesSystemSelector(state),
-		preparedFilesSystem: preparedFilesSystemSelector(state),
+		version: versionSelector(state),
+		fileSystems: fileSystemSelector(state),
+		tree: treeLinksSelector(state)
 	}),
 	state => ({
-		setActiveForCommentByKey: key => setActiveForCommentByKeyAction(state, key),
-		deleteComment: id => deleteCommentAction(state, id),
+		setActiveForCommentByKey: (version, key) => setActiveForCommentByKeyAction(state, version, key),
+		deleteComment: (version, id) => deleteCommentAction(state, version, id),
+		updateTree: version => updateTreeAction(state, version)
 	})
 )
 
 export const BodyContainer = enhance(({
-	preparedFilesSystem,
 	setActiveForCommentByKey,
-	deleteComment
+	deleteComment,
+	updateTree,
+	...props
 }) => {
-	const onClickNode = useCallback((key) => {
-		setActiveForCommentByKey(key);
+	// console.log(props.tree);
+	// console.log(props.fileSystems);
+
+	const onClickNode = useCallback((version, key) => {
+		setActiveForCommentByKey(version, key);
 	}, [setActiveForCommentByKey])
 
-	const onDeleteComment = useCallback((id) => {
-		deleteComment(id);
-	}, [deleteComment])
+	const onDeleteComment = useCallback((version, id) => {
+		deleteComment(version - 1, id);
+		updateTree(version - 1);
+	}, [deleteComment, updateTree])
 
 	return (
-		<BodyView fileSystems={preparedFilesSystem} onDeleteComment={onDeleteComment} onClickNode={onClickNode} />
+		<BodyView {...props} onDeleteComment={onDeleteComment} onClickNode={onClickNode} />
 	)
 })

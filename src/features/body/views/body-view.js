@@ -1,75 +1,92 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react-perf/jsx-no-new-object-as-prop */
 /* eslint-disable no-console */
 import React, { useCallback } from 'react'
 import { AbstractNode } from './abstract-node'
 import { styles } from './styles'
 
-const GroupAbstractNode = ({ keyNode, node, marginLeft, onClickNode, onDeleteComment }) => {
-	const handlerClick = useCallback(id => () => {
-		onClickNode(id)
+const GroupAbstractNode = ({
+	node,
+	globalVersion,
+	parentVersion,
+	marginLeft,
+	onClickNode,
+	onDeleteComment
+}) => (
+	<React.Fragment>
+		<div className={styles.group_version}>
+			{
+				Object.values(node).map(({
+					name,
+					id,
+					version: nodeVersion,
+					comment,
+					status,
+					children
+				}) => (parentVersion >= nodeVersion ? (
+					<React.Fragment>
+						<AbstractNode
+							globalVersion={globalVersion}
+							nodeVersion={nodeVersion}
+							name={name}
+							comment={comment}
+							onClickNode={onClickNode(nodeVersion, id)}
+							onDeleteComment={onDeleteComment(nodeVersion, id)}
+							status={status}
+							key={id + name}
+						/>
+						<React.Fragment>
+							{
+								children != null ? (
+									<div
+										className={styles.children}
+										style={{ marginLeft: `${marginLeft + 10}px` }}
+										key={id}
+									>
+										{
+											Object.keys(children).map(childKey => (
+												<GroupAbstractNode
+													globalVersion={globalVersion}
+													parentVersion={nodeVersion}
+													node={children[childKey]}
+													marginLeft={marginLeft}
+													onClickNode={onClickNode}
+													onDeleteComment={onDeleteComment}
+												/>
+											))
+										}
+									</div>
+								) : null
+							}
+						</React.Fragment>
+					</React.Fragment>
+				) : null))
+			}
+		</div>
+	</React.Fragment>
+)
+
+export const BodyView = ({ fileSystems, version, onClickNode, onDeleteComment }) => {
+	const rootKey = Object.keys(fileSystems)[0]
+
+	const handlerClick = useCallback((version, id) => () => {
+		onClickNode(version, id)
 	}, [onClickNode])
 
-	const handlerDeleteComment = useCallback(id => () => {
-		onDeleteComment(id)
+	const handlerDeleteComment = useCallback((version, id) => () => {
+		onDeleteComment(version, id)
 	}, [onDeleteComment])
-
-	return (
-		<React.Fragment>
-			<AbstractNode
-				name={node.name}
-				comment={node.comment}
-				key={node.name + keyNode}
-				onClickNode={handlerClick(keyNode)}
-				onDeleteComment={handlerDeleteComment(keyNode)}
-				status={node.status}
-			/>
-			{
-				Object.keys(node.children).map((key) => {
-					const nextNode = node.children[key];
-					if (nextNode.children != null) {
-						return (
-							<React.Fragment key={key}>
-								<div style={{ marginLeft: `${marginLeft + 10}px` }} key={key}>
-									<GroupAbstractNode
-										keyNode={key}
-										node={nextNode}
-										marginLeft={marginLeft}
-										onClickNode={onClickNode}
-										onDeleteComment={onDeleteComment}
-									/>
-								</div>
-							</React.Fragment>
-						)
-					}
-					return (
-						<AbstractNode
-							name={nextNode.name}
-							comment={nextNode.comment}
-							marginLeft={marginLeft + 10}
-							onClickNode={handlerClick(key)}
-							onDeleteComment={handlerDeleteComment(key)}
-							key={nextNode.name + key}
-							status={nextNode.status}
-						/>
-					)
-				})
-			}
-		</React.Fragment>
-	)
-}
-
-export const BodyView = ({ fileSystems, onClickNode, onDeleteComment }) => {
-	const rootKey = Object.keys(fileSystems)[0]
 
 	return (
 		<div className={styles.body}>
 			{fileSystems[rootKey] && (
 				<GroupAbstractNode
-					keyNode={rootKey}
 					node={fileSystems[rootKey]}
+					globalVersion={version}
+					parentVersion={version}
 					marginLeft={10}
-					onClickNode={onClickNode}
-					onDeleteComment={onDeleteComment}
+					onClickNode={handlerClick}
+					onDeleteComment={handlerDeleteComment}
 				/>
 			)}
 		</div>

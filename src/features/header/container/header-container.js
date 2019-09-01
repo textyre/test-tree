@@ -3,20 +3,23 @@
 /* eslint-disable no-shadow */
 import React, { useCallback, useState } from 'react'
 import { connect } from 'react-redux'
-import { setLoadedFileAction, resetLoadedFileAction } from '@features/body/store/actions'
-// import { rootIndexSelector } from '@features/body/store/selectors'
+import { pushLoadedFileAction, prepareFileSystemAction } from '@features/body/store/actions'
+import { rootIndexSelector, versionSelector } from '@features/body/store/selectors'
 import PapaParse from 'papaparse'
 import { HeaderView } from '../views/header-view'
 
 const enhance = connect(
-	null,
 	state => ({
-		setLoadedFile: file => setLoadedFileAction(state, file),
-		resetLoadedFile: file => resetLoadedFileAction(state, file)
+		rootIndex: rootIndexSelector(state),
+		version: versionSelector(state)
+	}),
+	state => ({
+		pushLoadedFile: (file, isResetAndPush) => pushLoadedFileAction(state, file, isResetAndPush),
+		prepareFileSystem: version => prepareFileSystemAction(state, version)
 	})
 )
 
-export const HeaderContainer = enhance(({ setLoadedFile }) => {
+export const HeaderContainer = enhance(({ rootIndex, version, pushLoadedFile, prepareFileSystem }) => {
 	const [progress, setProgress] = useState(0);
 
 	const updateProgress = useCallback((event) => {
@@ -40,16 +43,18 @@ export const HeaderContainer = enhance(({ setLoadedFile }) => {
 			const result = PapaParse.parse(
 				event.target.result, {}
 			);
-			setLoadedFile(result.data)
-			// if (Number(rootIndex) === Number(result.data[0][0])) {
 
-			// } else {
-			// 	resetLoadedFile(result.data)
-			// }
+			if (Number(rootIndex) === Number(result.data[0][0])) {
+				pushLoadedFile(result.data)
+			} else {
+				pushLoadedFile(result.data, true)
+			}
+
+			prepareFileSystem(version);
 		}
 
 		reader.readAsText(event.target.files[0]);
-	}, [setLoadedFile, updateProgress]);
+	}, [prepareFileSystem, pushLoadedFile, rootIndex, updateProgress, version]);
 
 	return (
 		<HeaderView

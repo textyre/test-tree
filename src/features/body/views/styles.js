@@ -4,57 +4,72 @@ export const styles = css`
     .body {
         padding-top: 15px;
         padding-left: 20px;
+        padding-bottom: 150px;
     }
     .wrapper {
         display: inline-flex;
-        align-items: center;
-        width: 100%;
+        justify-content: space-between;
         padding: 5px;
+        box-sizing: border-box;
         .node {
             position: relative;
             margin-bottom: 5px;
             cursor: pointer;
             &:hover {
                 color:  #8285e8;
+                opacity: 1;
             }            
         }
-        .new {
-            animation: new_node 5s ease-in-out 0s 10 alternate;
-        }
-        .rename {
-            animation: rename 5s ease-in-out 0s 10 alternate;
-        }
-        .for_deleted {
-            animation: for_delete 5s ease-in-out 0s 10 alternate;
-        }
-        &:hover > .wrapper_comment {
-            opacity: 1;
-        }
-        .wrapper_comment_delete {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .wrapper_comment {
-            display: inline-flex;
-            align-items: center;
-            opacity: 0;
-        }
-        .comment {
-            font-size: 12px;
-            font-weight: 600;
-            font-style: italic;
+        .node_removed {
+            color: #e34444;
             opacity: 0.5;
-            margin-left: 10px;
-            cursor: pointer;
         }
-        .comment_delete {
-            height: 10px;
-            width: 10px;
-            fill: white;
-            margin-left: 10px;
-            &:hover {
-                fill: #8285e8;
+        .node_edit {
+            color: #ffde62
+        }
+        .leftPart {
+            .wrapper_comment {
+                align-items: center;
+                opacity: 0;
+                max-height: 0;
+                min-height: 0;
+                transition: all .2s ease-in-out;
+                max-width: 500px;
+                overflow-y: scroll;
+                padding-right: 30px;
+                position: relative;
+                .comment {
+                    display: inline-flex;
+                    word-break: break-all;
+                    font-size: 14px;
+                    font-weight: 600;
+                    font-style: italic;
+                    opacity: 0.5;
+                    cursor: pointer;
+                }
+                .wrapper_comment_delete {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    &:hover > .comment_delete{
+                        fill: #8285e8;
+                    }
+                    .comment_delete {
+                        height: 15px;
+                        width: 15px;
+                        fill: white;
+                        margin-left: 10px;
+                        z-index: 1;
+                        cursor: pointer;
+                    }
+                }
+                
+            }
+            .active_comment {
+                opacity: 1;
+                max-height: 100px;
+                overflow-y: scroll;
             }
         }
     }

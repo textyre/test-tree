@@ -5,7 +5,7 @@ import { ReactComponent as Cancel } from '@shared/icons/cancel.svg'
 import { ReactComponent as SendMessage } from './paper-plane.svg';
 import { styles } from './styles'
 
-export const Comment = ({ setComment: setCommentInStore, setActiveForCommentByKey, node }) => {
+export const Comment = ({ setComment: setCommentInStore, updateTree, setActiveForCommentByKey, node }) => {
 	const [comment, setComment] = useState('');
 	const editableDiv = useRef();
 	const handlerInput = useCallback(() => {
@@ -13,11 +13,14 @@ export const Comment = ({ setComment: setCommentInStore, setActiveForCommentByKe
 	}, [])
 
 	const sentComment = useCallback(() => {
-		const { key } = node;
-		setCommentInStore(editableDiv.current.textContent, key)
-		setComment('');
-		editableDiv.current.textContent = ''
-	}, [node, setCommentInStore])
+		if (node) {
+			const { key, version } = node;
+			setCommentInStore(editableDiv.current.textContent, key, version - 1)
+			updateTree(version - 1)
+			setComment('');
+			editableDiv.current.textContent = ''
+		}
+	}, [node, setCommentInStore, updateTree])
 
 	const deleteReciever = useCallback(() => {
 		setActiveForCommentByKey(null);

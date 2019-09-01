@@ -42,8 +42,13 @@ export const styles = css`
             }
             span {
                 position: absolute;
-                left: 16px;
-                top: 7px;
+                left: 0px;
+                top: 0px;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 90%;
             }
         }
     }
